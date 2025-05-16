@@ -1,0 +1,36 @@
+# .github/workflows/ktlint.yml
+name: ktlint
+
+# これで PR コメント作成権限を明示的に許可
+permissions:
+  contents: read # ソースチェックアウト用
+  pull-requests: write # PR へのコメント作成用
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # 1) リポジトリをチェックアウト
+      - uses: actions/checkout@v4
+
+      # 2) JDK をセットアップ
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+
+      # 3) ScaCap/action-ktlint で ktlint+reviewdog を一気に実行
+      - name: Run ktlint via reviewdog
+        uses: ScaCap/action-ktlint@v1.9.0
+        with:
+          # PR 上にレビューコメントを出す
+          reporter: github-pr-review
+          # 変更行のみコメントする
+          filter_mode: added
+          # GitHub Token は自動で注入される
+          github_token: ${{ secrets.GITHUB_TOKEN }}
