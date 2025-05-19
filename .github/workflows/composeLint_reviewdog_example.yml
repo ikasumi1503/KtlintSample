@@ -1,6 +1,6 @@
 name: Pull Request Check
 
-on: [pull_request]
+on: [pull_request_target]
 
 env:
   JAVA_VERSION: 17

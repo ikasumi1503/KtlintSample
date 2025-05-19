@@ -1,10 +1,7 @@
 # .github/workflows/ktlint.yml
 name: ktlint
 
-on:
-  push:
-    branches: [main]
-  pull_request:
+on: [pull_request_target]
 
 jobs:
   lint:
